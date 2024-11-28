@@ -11,6 +11,7 @@ import { CartService } from 'src/app/cart/cart.service';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
 
   constructor(
     private service: ProductService,
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.service.getProducts().subscribe((data) => {
       this.products = data;
+      this.filteredProducts = data;
     });
   }
 
@@ -34,5 +36,12 @@ export class ProductListComponent implements OnInit {
         });
       },
     });
+  }
+
+  applyFilter(event: Event) : void {
+    let searchTerm = (event.target as HTMLInputElement).value;
+    searchTerm = searchTerm.trim().toLowerCase();
+
+    this.filteredProducts = this.products.filter((product) => product.name.toLowerCase().includes(searchTerm));
   }
 }
