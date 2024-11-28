@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CartService {
   private apiURL = environment.apiURL + '/cart';
+  private checkoutURL = environment.apiURL + '/checkout';
   constructor(private httpClient: HttpClient) {}
 
   getCartItems(): Observable<Product[]> {
@@ -21,5 +22,9 @@ export class CartService {
 
   clearCart(): Observable<void> {
     return this.httpClient.delete<void>(this.apiURL);
+  }
+
+  checkout(products: Product[]): Observable<void> {
+    return this.httpClient.post<void>(this.checkoutURL, products);
   }
 }
